@@ -15,6 +15,7 @@ class Box
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups("music:read")]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -40,6 +41,11 @@ class Box
     #[ORM\OneToMany(mappedBy: 'box', targetEntity: Book::class)]
     private Collection $books;
 
+
+    public function __toString(): string
+    {
+        return $this->id;
+    }
     public function __construct()
     {
         $this->books = new ArrayCollection();

@@ -23,7 +23,10 @@ class Category
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Book::class)]
     private Collection $books;
-
+    public function __toString(): string
+    {
+        return $this->name;
+    }
     public function __construct()
     {
         $this->books = new ArrayCollection();
