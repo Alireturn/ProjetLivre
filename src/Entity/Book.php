@@ -53,6 +53,10 @@ class Book
     #[ORM\Column(type: Types::TEXT)]
     #[Groups("music:read")]
     private ?string $resume = null;
+    
+    #[ORM\ManyToOne(inversedBy: 'book')]
+    private ?Borrow $borrow = null;
+
 
     public function getId(): ?int
     {
@@ -151,6 +155,18 @@ class Book
     public function setResume(string $resume): self
     {
         $this->resume = $resume;
+
+        return $this;
+    }
+
+    public function getBorrow(): ?Borrow
+    {
+        return $this->borrow;
+    }
+
+    public function setBorrow(?Borrow $borrow): self
+    {
+        $this->borrow = $borrow;
 
         return $this;
     }

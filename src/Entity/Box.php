@@ -30,9 +30,9 @@ class Box
     #[Groups("music:read")]
     private ?int $city = null;
 
-    // #[ORM\Column(type: Types::ARRAY)]
-    // #[Groups("music:read")]
-    // private array $geo_loc = [];
+    #[ORM\Column(type: Types::ARRAY)]
+    #[Groups("music:read")]
+    private array $geo_loc = [];
 
     #[ORM\Column]
     #[Groups("music:read")]
@@ -44,8 +44,9 @@ class Box
 
     public function __toString(): string
     {
-        return $this->id;
+        return $this->street;
     }
+
     public function __construct()
     {
         $this->books = new ArrayCollection();

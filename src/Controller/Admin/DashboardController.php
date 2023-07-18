@@ -4,11 +4,13 @@ namespace App\Controller\Admin;
 
 use App\Entity\Book;
 use App\Entity\Box;
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Uid\Uuid;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -40,10 +42,12 @@ class DashboardController extends AbstractDashboardController
             ->setTitle('Api Symfony');
     }
 
+
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('The Label', 'fas fa-list', Book::class);
-        yield MenuItem::linkToCrud('The Label', 'fas fa-list', Box::class);
+        yield MenuItem::linkToCrud('Livre', 'fas fa-book', Book::class);
+        yield MenuItem::linkToCrud('Box', 'fas fa-box', Box::class);
+        yield MenuItem::linkToCrud('User', 'fas fa-box', User::class);
     }
 }

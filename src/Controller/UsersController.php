@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Box;
 use App\Entity\Book;
+use App\Entity\Borrow;
 use App\Entity\Category;
 use App\Repository\BoxRepository;
 use App\Repository\BookRepository;
@@ -19,8 +20,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
-
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Uid\Uuid;
 
 class UsersController extends AbstractController
 {
@@ -43,8 +44,9 @@ class UsersController extends AbstractController
     }
 
     #[Route('/api/v1/box', name: 'app_box', methods: ["GET"])]
-    public function postLivre(SerializerInterface $normalize, BoxRepository $box)
+    public function getBox(SerializerInterface $normalize, BoxRepository $box)
     {
+
         $livre = $box->findAll();
 
         $json = $normalize->serialize($livre, 'json', ['groups' => 'music:read']);
@@ -55,7 +57,7 @@ class UsersController extends AbstractController
     }
 
     #[Route('/api/v1/category', name: 'app_category', methods: ["GET"])]
-    public function postCategory(SerializerInterface $normalize, CategoryRepository $category)
+    public function getCategory(SerializerInterface $normalize, CategoryRepository $category)
     {
         $category = $category->findAll();
 
@@ -66,5 +68,34 @@ class UsersController extends AbstractController
 
 
         return $reponse;
+    }
+
+    #[Route('/api/v1/post/category', name: 'cc', methods: "POST")]
+    public function postCategory(SerializerInterface $normalize, Request $request, EntityManagerInterface $em)
+    {
+        $jsonrecu = $request->getContent();
+
+        $json = $normalize->deserialize($jsonrecu, Borrow::class, 'json');
+        $em->persist($json);
+        $em->flush();
+
+        return $this->json($json, 201, []);
+    }
+
+    #[Route('/api/v1/post/book', name: 'app_book_post', methods: "POST")]
+    public function PosttLivre(SerializerInterface $normalize, BookRepository $bokkk, Request $request, EntityManagerInterface $em)
+    {
+        // $jsonrecu = $request->getContent();
+        // dd($jsonrecu);
+
+        // $json = $normalize->deserialize($jsonrecu, Book::class, 'json');
+
+        // $em->persist($json);
+        // $em->flush();
+        // return $this->json($json, 201, [], ['groups' => 'music:read']);
+        // return $request->get('id');
+        $userid = json_decode($request->getContent(), true);
+        $id = $userid['id'];
+        dd($id);
     }
 }
